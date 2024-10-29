@@ -10,6 +10,4 @@ createRoot(document.getElementById('root')).render(
   <GlobalContextProvider>
     <RouterProvider router={router} />
   </GlobalContextProvider>
-
-
 )

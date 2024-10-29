@@ -1,15 +1,16 @@
-import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { GlobalContext } from '../Context/globalContext'
+
+//custom react hooks
+import { useGlobalContext } from '../Hooks/useGlobalContext';
 
 function Navbar() {
 
-  const {colors} = useContext(GlobalContext)
+  const {colors, bgColorChange} = useGlobalContext()
 console.log(colors);
 
   return (
     <>
-      <nav className='bg-slate-200'>
+      <nav className='bg-slate-200' style={{backgroundColor: bgColorChange ? bgColorChange : ""}}>
         <div className='container mx-auto flex justify-between py-5'>
           <div>
            <NavLink className={"text-lg"} to={"/"}>LOGO</NavLink> 

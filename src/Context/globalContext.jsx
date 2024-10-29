@@ -1,22 +1,35 @@
 
-import {createContext} from 'react'
+import { createContext, useEffect, useReducer } from 'react'
 
-export const GlobalContext  = createContext()
+export const GlobalContext = createContext()
 
-const colors = [
-    {
-        item:"#4C4B16"
-    },
-    {
-        item:"#4CC9FE"
-    },
-    {
-        item:"#C62E2E"
+const dataFromLocal = () =>{
+   return (
+    JSON.parse(localStorage.getItem("my-colors")) ?? {
+        colors: ["#4C4B16", "#4CC9FE", "#C62E2E"],
+        bgColorChange: null
     }
-]
+   ) 
+}
 
-export function GlobalContextProvider({children}){
-    return <GlobalContext.Provider value={{colors}}>
+const changeState = (state, action) => {
+    const { type, payload } = action;
+
+    switch (type) {
+        case "BG_COLOR_CHANGE":
+            return { ...state, bgColorChange: payload }
+        default: 
+            return state
+    }
+}
+
+export function GlobalContextProvider({ children }) {
+    const [state, dispatch] = useReducer(changeState, dataFromLocal())
+
+    useEffect(()=>{
+        localStorage.setItem("my-colors", JSON.stringify(state))
+    }, [state])
+    return <GlobalContext.Provider value={{ ...state, dispatch }}>
         {children}
     </GlobalContext.Provider>
 }
